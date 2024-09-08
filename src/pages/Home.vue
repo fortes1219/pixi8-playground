@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import * as PIXI from 'pixi.js';
 import planeImage from '@/assets/plane.png';
@@ -29,9 +29,9 @@ onMounted(async () => {
   // 加载资源
   const planeTexture = await PIXI.Assets.load(planeImage);
   const plane = new PIXI.Sprite(planeTexture);
-  plane.anchor.set(0.5, 1);
-  plane.x = safeMargin;
-  plane.y = app.screen.height - safeMargin;
+  plane.anchor.set(0.5, 0.8);
+  plane.x = safeMargin - 80;
+  plane.y = app.screen.height;
   app.stage.addChild(plane);
 
   arcGraphics = new PIXI.Graphics();
@@ -93,12 +93,18 @@ onMounted(async () => {
     const rangeY = startY - 40;
 
     let cp1X, cp1Y, cp2X, cp2Y, endX, endY;
-    cp1X = startX + rangeX * 0.3;
-    cp1Y = startY - rangeY * (multiplier / 6.0) * 0.6;
-    cp2X = startX + rangeX * 0.6;
-    cp2Y = startY - rangeY * (multiplier / 6.0) * 0.8;
+    cp1X = startX + rangeX * 0.5; // X軸優先
+    cp1Y = startY - rangeY * 0.2; // 初步高度變化不大
+    cp2X = startX + rangeX * 0.8; // 快接近右邊才大幅度升高
+    cp2Y = startY - rangeY * 0.7;
     endX = startX + rangeX;
-    endY = startY - rangeY * (multiplier / 6.0);
+    endY = startY - rangeY * 0.9;
+    // cp1X = startX + rangeX * 0.3;
+    // cp1Y = startY - rangeY * (multiplier / 6.0) * 0.6;
+    // cp2X = startX + rangeX * 0.6;
+    // cp2Y = startY - rangeY * (multiplier / 6.0) * 0.8;
+    // endX = startX + rangeX;
+    // endY = startY - rangeY * (multiplier / 6.0);
 
     // if (multiplier < 5.5) {
     //   // 墜機邏輯：飛機先上升後急劇下降
